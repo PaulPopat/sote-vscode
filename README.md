@@ -1,0 +1,1 @@
+sote-vscode
