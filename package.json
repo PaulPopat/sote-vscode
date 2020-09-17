@@ -1,0 +1,39 @@
+{
+  "name": "sote-framework",
+  "displayName": "SOTE Framework",
+  "description": "VSCode syntax highlighting and autocomplete for the SOTE framework",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.49.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "tpe",
+        "aliases": [
+          "SOTE Framework",
+          "tpe",
+          "SOTE"
+        ],
+        "extensions": [
+          ".tpe"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "tpe",
+        "scopeName": "source.tpe",
+        "path": "./syntaxes/tpe.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.css": "css",
+          "source.js": "javascript"
+        }
+      }
+    ]
+  }
+}
