@@ -6,9 +6,11 @@
   "engines": {
     "vscode": "^1.49.0"
   },
+  "icon": "./images/icon.png",
   "categories": [
     "Programming Languages"
   ],
+  "publisher": "paulpopat",
   "contributes": {
     "languages": [
       {
@@ -35,5 +37,9 @@
         }
       }
     ]
+  },
+  "repository": {
+    "url": "https://github.com/PaulPopat/sote-vscode.git",
+    "type": "GIT"
   }
 }

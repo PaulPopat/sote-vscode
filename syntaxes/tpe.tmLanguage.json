@@ -2188,7 +2188,7 @@
           ]
         },
         {
-          "begin": "(?i)(<)(for|if)(?=\\s|/?>)",
+          "begin": "(?i)(<)(for|if|children)(?=\\s|/?>)",
           "beginCaptures": {
             "1": {
               "name": "punctuation.definition.tag.begin.html"
@@ -2211,7 +2211,7 @@
           ]
         },
         {
-          "begin": "(?i)(</)(for|if)(?=\\s|/?>)",
+          "begin": "(?i)(</)(for|if|children)(?=\\s|/?>)",
           "beginCaptures": {
             "1": {
               "name": "punctuation.definition.tag.begin.html"
