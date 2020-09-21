@@ -2,13 +2,22 @@
   "name": "sote-framework",
   "displayName": "SOTE Framework",
   "description": "VSCode syntax highlighting and autocomplete for the SOTE framework",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.49.0"
   },
   "icon": "images/icon.png",
   "categories": [
     "Programming Languages"
+  ],
+  "main": "./out/index.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "activationEvents": [
+    "*"
   ],
   "publisher": "paulpopat",
   "contributes": {
@@ -17,20 +26,19 @@
         "id": "tpe",
         "aliases": [
           "SOTE Framework",
-          "tpe",
-          "SOTE"
+          "SOTE",
+          "tpe"
         ],
         "extensions": [
           ".tpe"
-        ],
-        "configuration": "./language-configuration.json"
+        ]
       }
     ],
     "grammars": [
       {
         "language": "tpe",
+        "path": "./syntaxes/tpe.html.json",
         "scopeName": "source.tpe",
-        "path": "./syntaxes/tpe.tmLanguage.json",
         "embeddedLanguages": {
           "source.css": "css",
           "source.js": "javascript"
@@ -41,5 +49,18 @@
   "repository": {
     "url": "https://github.com/PaulPopat/sote-vscode.git",
     "type": "GIT"
+  },
+  "dependencies": {
+    "@paulpopat/safe-type": "^2.1.0",
+    "@paulpopat/sote": "^0.6.12",
+    "chokidar": "^3.4.2",
+    "fs-extra": "^9.0.1",
+    "vscode-html-languageservice": "^3.1.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.11.1",
+    "@types/vscode": "^1.49.0",
+    "typescript": "^4.0.3"
   }
 }
