@@ -12,3 +12,5 @@ export function Logger(connection: Connection) {
     },
   };
 }
+
+export type Logger = ReturnType<typeof Logger>;

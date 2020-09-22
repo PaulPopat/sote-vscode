@@ -1,5 +1,4 @@
 import * as path from "path";
-import { Hover, LanguageService } from "vscode-html-languageservice";
 import {
   createConnection,
   ProposedFeatures,
@@ -10,7 +9,7 @@ import {
   TextDocumentPositionParams,
 } from "vscode-languageserver";
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { BuildService } from "./app-provider";
+import { BuildService, LanguageService } from "./app-provider";
 import { Logger } from "./utils/logger";
 
 (async () => {
@@ -32,7 +31,7 @@ import { Logger } from "./utils/logger";
     );
 
     for (const dir of params.workspaceFolders ?? []) {
-      services[dir.uri] = await BuildService(dir.uri);
+      services[dir.uri] = await BuildService(dir.uri, logger);
     }
 
     connection.onInitialized(() => {
@@ -45,7 +44,7 @@ import { Logger } from "./utils/logger";
       if (hasWorkspaceFolderCapability) {
         connection.workspace.onDidChangeWorkspaceFolders(async (_event) => {
           for (const dir of _event.added) {
-            services[dir.uri] = await BuildService(dir.uri);
+            services[dir.uri] = await BuildService(dir.uri, logger);
           }
 
           for (const dir of _event.removed) {
@@ -60,7 +59,7 @@ import { Logger } from "./utils/logger";
         textDocumentSync: TextDocumentSyncKind.Incremental,
         completionProvider: {
           resolveProvider: true,
-          triggerCharacters: ["<", "=", "'", '"'],
+          triggerCharacters: ["<", "=", "'", '"', ".", "[a-zA-Z0-9]"],
         },
         workspace: {
           workspaceFolders: {
@@ -113,7 +112,7 @@ import { Logger } from "./utils/logger";
     }, {} as NodeJS.Dict<boolean>);
 
     for (const s in works) {
-      services[s] = await BuildService(s);
+      services[s] = await BuildService(s, logger);
     }
   });
 
@@ -140,39 +139,16 @@ import { Logger } from "./utils/logger";
   };
 
   connection.onCompletion(
-    processor((p, document, service) =>
-      service
-        .doComplete(document, p.position, service.parseHTMLDocument(document))
-        .items.map((d) => ({
-          label: d.label,
-          documentation: d.documentation,
-          kind: d.kind,
-          data: d.data,
-        }))
-    )
+    processor((p, document, service) => service.do_complete(document, p))
   );
 
   connection.onHover(
-    processor((p, document, service) => {
-      const result = service.doHover(
-        document,
-        p.position,
-        service.parseHTMLDocument(document)
-      );
-
-      if (!result) {
-        return undefined;
-      }
-
-      return {
-        range: result?.range,
-        contents: {
-          value: (result.contents as any).value,
-          kind: "markdown",
-        },
-      } as any;
-    })
+    processor((p, document, service) => service.do_hover(document, p) as any)
   );
+
+  documents.onDidChangeContent((change) => {
+    GetService(change.document.uri)?.validate(change.document, connection);
+  });
 
   connection.onCompletionResolve((item) => item);
   documents.listen(connection);
