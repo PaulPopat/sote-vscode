@@ -117,7 +117,11 @@ import { Logger } from "./utils/logger";
   });
 
   const processor = <T extends TextDocumentPositionParams, TResult>(
-    handler: (p: T, document: TextDocument, service: LanguageService) => TResult
+    handler: (
+      p: T,
+      document: TextDocument,
+      service: LanguageService
+    ) => Promise<TResult>
   ) => {
     return (p: T) => {
       if (!p.textDocument.uri.endsWith(".tpe")) {
@@ -143,7 +147,7 @@ import { Logger } from "./utils/logger";
   );
 
   connection.onHover(
-    processor((p, document, service) => service.do_hover(document, p) as any)
+    processor((p, document, service) => service.do_hover(document, p)) as any
   );
 
   documents.onDidChangeContent((change) => {

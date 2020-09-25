@@ -54,6 +54,8 @@
   "dependencies": {
     "@paulpopat/safe-type": "^2.1.0",
     "@paulpopat/sote": "^0.6.12",
+    "jayson": "^3.3.4",
+    "typescript-language-server": "^0.4.0",
     "vscode-css-languageservice": "^4.3.4",
     "vscode-html-languageservice": "^3.1.3",
     "vscode-languageclient": "^6.1.3",
