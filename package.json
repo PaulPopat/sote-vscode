@@ -41,7 +41,7 @@
         "path": "./syntaxes/tpe.html.json",
         "scopeName": "source.tpe",
         "embeddedLanguages": {
-          "source.css": "css",
+          "source.css.scss": "scss",
           "source.js": "javascript"
         }
       }

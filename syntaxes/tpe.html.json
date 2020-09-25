@@ -1718,7 +1718,7 @@
                   "name": "punctuation.definition.tag.begin.html"
                 },
                 "2": {
-                  "name": "source.css-ignored-vscode"
+                  "name": "source.css.scss-ignored-vscode"
                 },
                 "3": {
                   "name": "entity.name.tag.html"
@@ -1747,10 +1747,10 @@
                 {
                   "begin": "(?!\\G)",
                   "end": "(?=</(?i:style))",
-                  "name": "source.css",
+                  "name": "source.css.scss",
                   "patterns": [
                     {
-                      "include": "source.css"
+                      "include": "source.css.scss"
                     }
                   ]
                 }
