@@ -3,6 +3,7 @@ import * as path from "path";
 import { LanguageClient, TransportKind } from "vscode-languageclient";
 
 export function activate(context: vscode.ExtensionContext) {
+  console.log("Starting extension");
   const serverModule = context.asAbsolutePath(path.join("out", "server.js"));
 
   const client = new LanguageClient(

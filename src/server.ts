@@ -19,6 +19,7 @@ import { Logger } from "./utils/logger";
     TextDocument
   );
   const logger = Logger(connection);
+  logger.add("Started server");
 
   connection.onInitialize(async (params: InitializeParams) => {
     let capabilities = params.capabilities;

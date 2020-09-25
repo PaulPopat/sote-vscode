@@ -1,62 +1,15 @@
-import * as path from "path";
 import {
   getLanguageService,
   ITagData,
   TextDocument,
 } from "vscode-html-languageservice";
-import {
-  GetOptions,
-  GetAllTpe,
-  Options,
-} from "@paulpopat/sote/lib/file-system";
-import { CompileApp } from "@paulpopat/sote/lib/compiler/page-builder";
-import { IsString } from "@paulpopat/safe-type";
-import { URI } from "vscode-uri";
 import { TextDocumentPositionParams } from "vscode-languageclient";
 import { Logger } from "./utils/logger";
 import { Connection } from "vscode-languageserver";
-
-export function UriToPath(stringUri: string) {
-  const uri = URI.parse(stringUri);
-  if (uri.scheme !== "file") {
-    throw new Error("This service must run on the host machine.");
-  }
-
-  return uri.fsPath;
-}
-
-async function GetComponents(options: Options) {
-  if (!options.components) {
-    return [];
-  }
-
-  const result = await Promise.all(
-    options.components?.map(async (components_dir) =>
-      IsString(components_dir)
-        ? await GetAllTpe(components_dir)
-        : (await GetAllTpe(components_dir.path)).map((c) => ({
-            ...c,
-            path: "/" + components_dir.prefix + c.path,
-          }))
-    )
-  );
-
-  const output: { path: string; text: string }[] = [];
-  for (const item of result) {
-    output.push(...item);
-  }
-
-  return output;
-}
+import { RunSote } from "./utils/spawn";
 
 export async function BuildServer(dir: string, logger: Logger) {
-  const cwd = UriToPath(dir);
-  const options = await GetOptions(path.join(cwd, "tpe-config.json"));
-  const components = await GetComponents(options);
-  const pages = await GetAllTpe(
-    options.pages ?? path.join(cwd, "src", "pages")
-  );
-  const app = await CompileApp(pages, components, false);
+  const app = await RunSote(dir, logger);
   const html_service = getLanguageService({
     customDataProviders: [
       {
@@ -142,6 +95,11 @@ export async function BuildServer(dir: string, logger: Logger) {
                   { name: "post" },
                   { name: "delete" },
                 ],
+              },
+              {
+                name: "babel",
+                description:
+                  "Indicates that this script should be compiled with babel.",
               },
             ];
           }
