@@ -48,9 +48,7 @@ export async function RunSote(dir: string, logger: Logger) {
   await fs.outputJson(join(tmp, "tpe-config.json"), options);
   await new Promise((res, rej) => {
     const command = join(
-      __dirname,
-      "..",
-      "..",
+      cwd,
       "node_modules",
       ".bin",
       process.platform === "win32" ? "sote.cmd" : "sote"
